@@ -10,7 +10,8 @@ class AdministradorBase(Base):
 
     id_administrador: Mapped[int] = mapped_column(sa.Integer, 
                                           primary_key=True,
-                                          nullable=False)
+                                          nullable=False,
+                                          autoincrement=True)
     nome_completo: Mapped[str] = mapped_column(sa.String,
                                                 nullable=False)
     email: Mapped[str] = mapped_column(sa.String,
@@ -25,7 +26,8 @@ class ConteudoBase(Base):
 
     id_conteudo: Mapped[int] = mapped_column(sa.Integer,
                                              primary_key=True,
-                                             nullable=False)
+                                             nullable=False,
+                                             autoincrement=True)
     titulo: Mapped[str] = mapped_column(sa.String,
                                         nullable=False)
     tipo: Mapped[str] = mapped_column(sa.Enum('BOAS_VINDAS', 'TO_DO','SOBRE_EMPRESA','DOCUMENTOS_IMPORTANTES'),
@@ -42,7 +44,8 @@ class ColaboradorBase(Base):
 
     id_colaborador: Mapped[int] = mapped_column(sa.Integer,
                                primary_key=True,
-                               nullable=False)
+                               nullable=False,
+                               autoincrement=True)
     nome_completo: Mapped[str] = mapped_column(sa.String,
                               nullable=False)
     email: Mapped[str] = mapped_column(sa.String,

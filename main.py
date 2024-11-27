@@ -1,8 +1,11 @@
-from fastapi import FastAPI
+from fastapi import Depends, FastAPI, HTTPException
+from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
 from database import models, schemas
-from db import  engine
-
+from db import  engine, get_db
+from sqlalchemy.orm import Session
+from database.repositories import *
+import time
 
 app = FastAPI()
 
@@ -24,17 +27,36 @@ async def add_process_time_header(request, call_next):
 
 # CRUD DE ADMINISTRADOR
 @app.post('/administrador', tags=["Administrador"], response_model=schemas.AdministradorModel, status_code=201)
-async def create_administrador():
-  pass
-@app.get('/administrador/{id}', tags=["Administrador"], response_model=schemas.AdministradorModel)
-def get_administrador():
-  pass
-@app.delete('/administrador/{id}', tags=["Administrador"])
-async def delete_administrador():
-  pass
-@app.put('/administrador/{id}', tags=["Administrador"], response_model=schemas.AdministradorModel)
-async def update_administrador():
-  pass
+async def create_administrador(administrador_request:schemas.AdministradorModel, db: Session = Depends(get_db)):
+  return await AdministradorRepo.create(db=db, administrador=administrador_request)
+
+@app.get('/administrador/{id_administrador}', tags=["Administrador"], response_model=schemas.AdministradorModel)
+def get_administrador(id_administrador: int, db: Session = Depends(get_db)):
+  db_administrador = AdministradorRepo.read_by_id(db, id_administrador)
+  if db_administrador is None:
+    raise HTTPException(status_code=404, detail="Administrador não consta em nossa banco de dados :c")
+  return db_administrador    
+
+@app.delete('/administrador/{id_administrador}', tags=["Administrador"])
+async def delete_administrador(id_administrador: int, db: Session = Depends(get_db)):
+  db_administrador = AdministradorRepo.read_by_id(db, id_administrador)
+  if db_administrador is None:
+    raise HTTPException(status_code=404, detail="Administrador não consta em nossa banco de dados :c")
+  await AdministradorRepo.delete(db, id_administrador)
+  return "Administrador removido com sucesso!"
+
+@app.put('/administrador/{id_administrador}', tags=["Administrador"], response_model=schemas.AdministradorModel)
+async def update_administrador(id_administrador: int, administrador_request: schemas.AdministradorModel, db: Session = Depends(get_db)):
+  db_administrador = AdministradorRepo.read_by_id(db, id_administrador)
+  if db_administrador:
+    update_administrador_encoded = jsonable_encoder(administrador_request)
+    db_administrador.nome_completo = update_administrador_encoded['nome_completo']
+    db_administrador.email = update_administrador_encoded['email']
+    db_administrador.data_nascimento = update_administrador_encoded['data_nascimento']
+    db_administrador.senha = update_administrador_encoded['senha']
+    return await AdministradorRepo.update(db=db, administrador_data=db_administrador)
+  else:
+      raise HTTPException(status_code=400, detail="Administrador não consta em nossa banco de dados :c")
 
 # CRUD DE CONTEUDO
 @app.post('/conteudo', tags=["Conteudo"], response_model=schemas.ConteudoModel, status_code=201)

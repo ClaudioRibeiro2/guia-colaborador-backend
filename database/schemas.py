@@ -3,7 +3,6 @@ from pydantic import BaseModel
 
 
 class AdministradorModel(BaseModel):
-  id_administrador: int
   nome_completo: str
   email: str
   data_nascimento: date
@@ -12,7 +11,6 @@ class AdministradorModel(BaseModel):
   class Config:
     orm_mode: True
 class ConteudoModel(BaseModel):
-  id_conteudo: int
   titulo: str
   tipo: str
   corpo: str
@@ -21,7 +19,7 @@ class ConteudoModel(BaseModel):
   class Config:
     orm_mode: True
 class ColaboradorModel(BaseModel):
-  id_colaborador: int
+  nome_completo:str
   email: str
   data_nascimento: date
   senha: str
