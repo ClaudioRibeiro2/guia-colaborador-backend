@@ -3,13 +3,12 @@ from enum import Enum
 import sqlalchemy as sa
 from sqlalchemy.orm import relationship, Mapped, mapped_column
 
-
-from db import Base
+from db import Base;
     
-class Administrador(Base):
+class AdministradorBase(Base):
     __tablename__ = "administrador"
 
-    id_admin: Mapped[int] = mapped_column(sa.Integer, 
+    id_administrador: Mapped[int] = mapped_column(sa.Integer, 
                                           primary_key=True,
                                           nullable=False)
     nome_completo: Mapped[str] = mapped_column(sa.String,
@@ -21,7 +20,7 @@ class Administrador(Base):
     senha: Mapped[str] = mapped_column(sa.String,
                                     nullable=False)
 
-class Conteudo(Base):
+class ConteudoBase(Base):
     __tablename__ = "conteudo"
 
     id_conteudo: Mapped[int] = mapped_column(sa.Integer,
@@ -35,10 +34,10 @@ class Conteudo(Base):
     corpo: Mapped[str] = mapped_column(sa.String,
                                        nullable=False)
     id_administrador: Mapped[int] = mapped_column(sa.Integer(),
-                                                  sa.ForeignKey('administrador.id_admin'))
-    administrador: Mapped['Administrador'] = relationship()
+                                                  sa.ForeignKey('administrador.id_administrador'))
+    administrador: Mapped['AdministradorBase'] = relationship()
 
-class Colaborador(Base):
+class ColaboradorBase(Base):
     __tablename__ = "colaborador"
 
     id_colaborador: Mapped[int] = mapped_column(sa.Integer,
@@ -52,7 +51,7 @@ class Colaborador(Base):
                                 nullable=False)
     senha: Mapped[str] = mapped_column(sa.String,
                       nullable=False)
-    fk_administrador_id_admin: Mapped[int] = mapped_column(sa.Integer(),
-                                                           sa.ForeignKey('administrador.id_admin'),
+    id_administrador: Mapped[int] = mapped_column(sa.Integer(),
+                                                           sa.ForeignKey('administrador.id_administrador'),
                                                            nullable=False)
-    administrador: Mapped['Administrador'] = relationship()    
+    administrador: Mapped['AdministradorBase'] = relationship()    
