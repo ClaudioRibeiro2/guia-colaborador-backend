@@ -22,25 +22,6 @@ class AdministradorBase(Base):
     senha: Mapped[str] = mapped_column(sa.String,
                                     nullable=False)
 
-class ConteudoBase(Base):
-    __tablename__ = "conteudo"
-
-    id_conteudo: Mapped[int] = mapped_column(sa.Integer,
-                                             primary_key=True,
-                                             nullable=False,
-                                             autoincrement=True)
-    titulo: Mapped[str] = mapped_column(sa.String,
-                                        nullable=False,
-                                        unique=True)
-    tipo: Mapped[str] = mapped_column(sa.Enum('BOAS_VINDAS', 'TO_DO','SOBRE_EMPRESA','DOCUMENTOS_IMPORTANTES'),
-                                      default='DOCUMENTOS_IMPORTANTES',
-                                      nullable=False)
-    corpo: Mapped[str] = mapped_column(sa.String,
-                                       nullable=False)
-    id_administrador: Mapped[int] = mapped_column(sa.Integer(),
-                                                  sa.ForeignKey('administrador.id_administrador'))
-    administrador: Mapped['AdministradorBase'] = relationship()
-
 class ColaboradorBase(Base):
     __tablename__ = "colaborador"
 
@@ -60,3 +41,21 @@ class ColaboradorBase(Base):
                                                   sa.ForeignKey('administrador.id_administrador'),
                                                   nullable=False)
     administrador: Mapped['AdministradorBase'] = relationship()    
+    
+class ConteudoBase(Base):
+    __tablename__ = "conteudo"
+
+    id_conteudo: Mapped[int] = mapped_column(sa.Integer,
+                                             primary_key=True,
+                                             nullable=False,
+                                             autoincrement=True)
+    titulo: Mapped[str] = mapped_column(sa.String,
+                                        nullable=False)
+    tipo: Mapped[str] = mapped_column(sa.Enum('BOAS_VINDAS', 'TO_DO','SOBRE_EMPRESA','DOCUMENTOS_IMPORTANTES'),
+                                      default='DOCUMENTOS_IMPORTANTES',
+                                      nullable=False)
+    corpo: Mapped[str] = mapped_column(sa.String,
+                                       nullable=False)
+    id_administrador: Mapped[int] = mapped_column(sa.Integer(),
+                                                  sa.ForeignKey('administrador.id_administrador'))
+    administrador: Mapped['AdministradorBase'] = relationship()

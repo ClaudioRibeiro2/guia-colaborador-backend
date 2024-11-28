@@ -24,7 +24,7 @@ class AdministradorRepo:
     return updated_item
   
   async def delete(db: Session, id_administrador):
-    db_item = db.get(models.AdministradorBase ,id_administrador)
+    db_item = db.get(models.ConteudoBase ,id_administrador)
     db.delete(db_item)
     db.commit()
   
@@ -60,9 +60,9 @@ class ColaboradorRepo:
 
 class ConteudoRepo:
   async def create(db: Session, conteudo: schemas.ConteudoModel):
-    db_conteudo = models.ConteudoBase(nome_completo=conteudo.titulo,
-                                      email=conteudo.tipo,
-                                      data_nascimento=conteudo.corpo,
+    db_conteudo = models.ConteudoBase(titulo=conteudo.titulo,
+                                      tipo=conteudo.tipo,
+                                      corpo=conteudo.corpo,
                                       id_administrador=conteudo.id_administrador)
     db.add(db_conteudo)
     db.commit()
@@ -72,14 +72,15 @@ class ConteudoRepo:
   def read_by_id_administrador(db: Session, id_administrador):
     return db.query(models.ConteudoBase).filter_by(id_administrador = id_administrador).first() 
   
-  def read_by_titulo(db: Session, titulo:str):
-    return db.query(models.ConteudoBase).filter_by(titulo = titulo).first()
+  def read_by_titulo(db: Session, titulo):
+    return db.query(models.ConteudoBase).filter_by(titulo = titulo)
   
-  def read_by_conteudos(db: Session, id_administradora:int):
-    return db.query(models.ConteudoBase).filter_by(id_administradora = id_administradora).all()
+  def read_by_conteudos(db: Session, id_administradora):
+    print(id_administradora)
+    return db.query(models.ConteudoBase).all()
   
-  def read_by_id_conteudo(db: Session, id_conteudo:int):
-    return db.query(models.ConteudoBase).filter_by(id_conteudo = id_conteudo)
+  def read_by_id_conteudo(db: Session, id_conteudo):
+    return db.query(models.ConteudoBase).filter_by(id_conteudo = id_conteudo).first()
   
   async def update(db: Session, conteudo_data):
     print(conteudo_data)
