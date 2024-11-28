@@ -1,15 +1,15 @@
-from datetime import date
+from datetime import datetime
 from pydantic import BaseModel
-
 
 class AdministradorModel(BaseModel):
   nome_completo: str
   email: str
-  data_nascimento: date
+  data_nascimento: datetime
   senha: str
   
   class Config:
     orm_mode: True
+    
 class ConteudoModel(BaseModel):
   titulo: str
   tipo: str
@@ -18,10 +18,11 @@ class ConteudoModel(BaseModel):
   
   class Config:
     orm_mode: True
+    
 class ColaboradorModel(BaseModel):
   nome_completo:str
   email: str
-  data_nascimento: date
+  data_nascimento: datetime
   senha: str
   id_administrador: int
   

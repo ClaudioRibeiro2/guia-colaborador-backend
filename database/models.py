@@ -15,8 +15,9 @@ class AdministradorBase(Base):
     nome_completo: Mapped[str] = mapped_column(sa.String,
                                                 nullable=False)
     email: Mapped[str] = mapped_column(sa.String,
-                                        nullable=False)
-    data_nascimento: Mapped[date] = mapped_column(sa.Date,
+                                    nullable=False,
+                                    unique=True)
+    data_nascimento: Mapped[datetime] = mapped_column(sa.DateTime(),
                              nullable=False)
     senha: Mapped[str] = mapped_column(sa.String,
                                     nullable=False)
@@ -29,10 +30,11 @@ class ConteudoBase(Base):
                                              nullable=False,
                                              autoincrement=True)
     titulo: Mapped[str] = mapped_column(sa.String,
-                                        nullable=False)
+                                        nullable=False,
+                                        unique=True)
     tipo: Mapped[str] = mapped_column(sa.Enum('BOAS_VINDAS', 'TO_DO','SOBRE_EMPRESA','DOCUMENTOS_IMPORTANTES'),
-                                       default='DOCUMENTOS_IMPORTANTES',
-                                          nullable=False)
+                                      default='DOCUMENTOS_IMPORTANTES',
+                                      nullable=False)
     corpo: Mapped[str] = mapped_column(sa.String,
                                        nullable=False)
     id_administrador: Mapped[int] = mapped_column(sa.Integer(),
@@ -43,18 +45,18 @@ class ColaboradorBase(Base):
     __tablename__ = "colaborador"
 
     id_colaborador: Mapped[int] = mapped_column(sa.Integer,
-                               primary_key=True,
-                               nullable=False,
-                               autoincrement=True)
+                                                primary_key=True,
+                                                nullable=False,
+                                                autoincrement=True)
     nome_completo: Mapped[str] = mapped_column(sa.String,
-                              nullable=False)
+                                               nullable=False)
     email: Mapped[str] = mapped_column(sa.String,
-                      nullable=False)
-    data_nascimento: Mapped[date] = mapped_column(sa.Date,
-                                nullable=False)
+                                       nullable=False)
+    data_nascimento: Mapped[datetime] = mapped_column(sa.DateTime(),
+                                                  nullable=False)
     senha: Mapped[str] = mapped_column(sa.String,
-                      nullable=False)
+                                       nullable=False)
     id_administrador: Mapped[int] = mapped_column(sa.Integer(),
-                                                           sa.ForeignKey('administrador.id_administrador'),
-                                                           nullable=False)
+                                                  sa.ForeignKey('administrador.id_administrador'),
+                                                  nullable=False)
     administrador: Mapped['AdministradorBase'] = relationship()    
