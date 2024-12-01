@@ -29,8 +29,29 @@ class ConteudoModel(BaseModel):
   
   class Config:
     orm_mode: True
+
+class ConteudoResponseModel(BaseModel):
+  id_conteudo: int
+  titulo: str
+  tipo: str
+  corpo: str
+  id_administrador: int
+  
+  class Config:
+    orm_mode: True
     
 class ColaboradorModel(BaseModel):
+  nome_completo:str
+  email: str
+  data_nascimento: datetime
+  senha: str
+  id_administrador: int
+  
+  class Config:
+    orm_mode = True  
+    
+class ColaboradorResponseModel(BaseModel):
+  id_colaborador: int
   nome_completo:str
   email: str
   data_nascimento: datetime

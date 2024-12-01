@@ -51,6 +51,9 @@ class ColaboradorRepo:
   def read_by_email(db: Session, email):
     return db.query(models.ColaboradorBase).filter_by(email = email).first()
   
+  def read_all(db: Session):
+    return db.query(models.ColaboradorBase).all()
+  
   async def update(db: Session, colaborador_data):
     updated_colaborador = db.merge(colaborador_data)
     db.commit()
@@ -79,6 +82,9 @@ class ConteudoRepo:
   def read_by_titulo(db: Session, titulo):
     return db.query(models.ConteudoBase).filter_by(titulo = titulo)
   
+  def read_all(db: Session):
+    return db.query(models.ConteudoBase).all()
+  
   def read_by_conteudos(db: Session, id_administradora):
     print(id_administradora)
     return db.query(models.ConteudoBase).all()
@@ -88,9 +94,6 @@ class ConteudoRepo:
   
   def read_conteudos_by_administrador(db:Session, id_administrador):
     return db.query(models.ConteudoBase).join(models.AdministradorBase).filter(models.ColaboradorBase.id_administrador == id_administrador).all()
-  
-  def read_all(db:Session):
-    return db.execute(select(models.ConteudoBase).offset(0).limit(100)).all() 
   
   async def update(db: Session, conteudo_data):
     print(conteudo_data)

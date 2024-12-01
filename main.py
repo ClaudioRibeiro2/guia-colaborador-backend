@@ -43,7 +43,7 @@ def get_administrador(id_administrador: int, db: Session = Depends(get_db)):
   return db_administrador
 
 @app.get('/administrador/all', tags=["Administrador"], response_model=List[schemas.AdministradorResponseModel])
-def get_administrador(db: Session = Depends(get_db)):
+def get_all_administrador(db: Session = Depends(get_db)):
   db_administrador = AdministradorRepo.read_all(db)
   return db_administrador
 
@@ -76,9 +76,12 @@ async def create_colaborador(colaborador_request: schemas.ColaboradorModel, db: 
         raise HTTPException(status_code=400, detail="Este colaborador já existe!")
   return await ColaboradorRepo.create(db=db, colaborador=colaborador_request)
 
-# get all colaboradores de um administrador
+@app.get('/colaborador/all', tags=["Colaborador"], response_model=List[schemas.ColaboradorResponseModel])
+def get_all_colaborador(db: Session = Depends(get_db)):
+  db_colaborador = ColaboradorRepo.read_all(db)
+  return db_colaborador
 
-@app.get('/colaborador/{id_colaborador}', tags=["Colaborador"], response_model=schemas.ColaboradorModel)
+@app.get('/colaborador/id/{id_colaborador}', tags=["Colaborador"], response_model=schemas.ColaboradorResponseModel)
 def get_colaborador(id_colaborador: int, db: Session = Depends(get_db)):
   db_colaborador = ColaboradorRepo.read_by_id(db, id_colaborador)
   if db_colaborador is None:
@@ -112,19 +115,18 @@ async def update_colaborador(id_colaborador: int, colaborador_request: schemas.C
 async def create_conteudo(conteudo_request: schemas.ConteudoModel, db: Session = Depends(get_db)):
   return await ConteudoRepo.create(db=db, conteudo=conteudo_request)
 
-@app.get('/conteudo/{id_conteudo}', tags=["Conteudo"], response_model=schemas.ConteudoModel)
+@app.get('/conteudo/id/{id_conteudo}', tags=["Conteudo"], response_model=schemas.ConteudoResponseModel)
 def get_conteudo(id_conteudo: int, db: Session = Depends(get_db)):
   db_conteudo = ConteudoRepo.read_by_id_conteudo(db, id_conteudo)
   if db_conteudo is None:
     raise HTTPException(status_code=404, detail="Conteudo não consta em nossa banco de dados :c")
   return db_conteudo
 
-@app.get('/conteudo/all/{id_administrador}', tags=["Conteudo"], response_model=None)
-def get_all_conteudos(id_administrador:int , db:Session = Depends(get_db)) -> dict[models.ConteudoBase]:
-  conteudos = ConteudoRepo.read_conteudos_by_administrador(db, id_administrador)
-  print(ConteudoRepo.read_all(db))
-  return dict(ConteudoRepo.read_all(db))
-  
+@app.get('/conteudo/all', tags=["Conteudo"], response_model=List[schemas.ConteudoResponseModel])
+def get_all_conteudo(db: Session = Depends(get_db)):
+  db_conteudo = ConteudoRepo.read_all(db)
+  return db_conteudo
+
 @app.delete('/conteudo/{id_conteudo}', tags=["Conteudo"],)
 async def delete_conteudo(id_conteudo: int, db: Session = Depends(get_db)):
   db_conteudo = ConteudoRepo.read_by_id_conteudo(db, id_conteudo)
