@@ -35,6 +35,8 @@ class ColaboradorBase(Base):
                                                nullable=False)
     email: Mapped[str] = mapped_column(sa.String,
                                        nullable=False)
+    setor: Mapped[str] = mapped_column(sa.String,
+                                       nullable=False)
     data_nascimento: Mapped[datetime] = mapped_column(sa.DateTime(),
                                                   nullable=False)
     senha: Mapped[str] = mapped_column(sa.String,

@@ -45,6 +45,7 @@ class ConteudoResponseModel(BaseModel):
 class ColaboradorModel(BaseModel):
   nome_completo:str
   email: str
+  setor: str
   data_nascimento: datetime
   senha: str
   id_administrador: int
@@ -56,6 +57,7 @@ class ColaboradorResponseModel(BaseModel):
   id_colaborador: int
   nome_completo:str
   email: str
+  setor: str
   data_nascimento: datetime
   senha: str
   id_administrador: int

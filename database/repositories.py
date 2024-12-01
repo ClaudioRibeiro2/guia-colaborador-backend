@@ -38,6 +38,7 @@ class ColaboradorRepo:
   async def create(db: Session, colaborador: schemas.ColaboradorModel):
     db_colaborador = models.ColaboradorBase(nome_completo=colaborador.nome_completo,
                                             email=colaborador.email,
+                                            setor=colaborador.setor,
                                             data_nascimento=colaborador.data_nascimento,
                                             senha=colaborador.senha,
                                             id_administrador=colaborador.id_administrador)

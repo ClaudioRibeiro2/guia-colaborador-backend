@@ -95,20 +95,21 @@ async def delete_colaborador(id_colaborador: int, db: Session = Depends(get_db))
   if db_conteudo is None:
     raise HTTPException(status_code=404, detail="Colaborador não consta em nossa banco de dados :c")
   await ColaboradorRepo.delete(db, id_colaborador)
-  return "Administrador removido com sucesso!"
+  return "Colaborador removido com sucesso!"
 
-@app.put('/colaborador/{id_colaborador}', tags=["Colaborador"], response_model=schemas.ColaboradorModel)
+@app.put('/colaborador/{id_colaborador}', tags=["Colaborador"], response_model=schemas.ColaboradorResponseModel)
 async def update_colaborador(id_colaborador: int, colaborador_request: schemas.ColaboradorModel, db: Session = Depends(get_db)):
   db_colaborador = db.get(models.ColaboradorBase, id_colaborador)
   if db_colaborador:
     db_colaborador.nome_completo = colaborador_request.nome_completo
     db_colaborador.email = colaborador_request.email
+    db_colaborador.setor = colaborador_request.setor
     db_colaborador.data_nascimento = colaborador_request.data_nascimento
     db_colaborador.senha = colaborador_request.senha
     db_colaborador.id_administrador = colaborador_request.id_administrador
     return await ColaboradorRepo.update(db=db, colaborador_data=db_colaborador)
   else:
-      raise HTTPException(status_code=400, detail="Administrador não consta em nossa banco de dados :c")
+      raise HTTPException(status_code=400, detail="Colaborador não consta em nossa banco de dados :c")
 
 
 # CRUD DE CONTEUDO
@@ -134,7 +135,7 @@ async def delete_conteudo(id_conteudo: int, db: Session = Depends(get_db)):
   if db_conteudo is None:
     raise HTTPException(status_code=404, detail="Conteudo não consta em nossa banco de dados :c")
   await AdministradorRepo.delete(db, id_conteudo)
-  return "Administrador removido com sucesso!"
+  return "Conteudo removido com sucesso!"
 @app.put('/conteudo/{id_conteudo}', tags=["Conteudo"], response_model=schemas.ConteudoModel)
 async def update_conteudo(id_conteudo: int, conteudo_request: schemas.ConteudoModel, db: Session = Depends(get_db)):
   db_conteudo = db.get(models.ConteudoBase, id_conteudo)
@@ -145,4 +146,4 @@ async def update_conteudo(id_conteudo: int, conteudo_request: schemas.ConteudoMo
     db_conteudo.id_administrador = conteudo_request.id_administrador
     return await ColaboradorRepo.update(db=db, colaborador_data=db_conteudo)
   else:
-      raise HTTPException(status_code=400, detail="Administrador não consta em nossa banco de dados :c")
+      raise HTTPException(status_code=400, detail="Conteudo não consta em nossa banco de dados :c")
