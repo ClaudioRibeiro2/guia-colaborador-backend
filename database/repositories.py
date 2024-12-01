@@ -16,6 +16,9 @@ class AdministradorRepo:
   def read_by_id(db: Session, id_administrador):
     return db.query(models.AdministradorBase).filter_by(id_administrador = id_administrador).first()
   
+  def read_all(db: Session):
+    return db.query(models.AdministradorBase).all()
+  
   def read_by_email(db: Session, email):
     return db.query(models.AdministradorBase).filter_by(email = email).first()
 

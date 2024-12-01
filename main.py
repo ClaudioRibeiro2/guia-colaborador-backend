@@ -1,3 +1,4 @@
+from typing import List
 from fastapi import Depends, FastAPI, HTTPException
 from fastapi.encoders import jsonable_encoder
 from fastapi.responses import JSONResponse
@@ -34,11 +35,16 @@ async def create_administrador(administrador_request:schemas.AdministradorModel,
         raise HTTPException(status_code=400, detail="Já existe um Administrador com esse e-mail!")
   return await AdministradorRepo.create(db=db, administrador=administrador_request)
 
-@app.get('/administrador/{id_administrador}', tags=["Administrador"], response_model=schemas.AdministradorResponseModel)
+@app.get('/administrador/id/{id_administrador}', tags=["Administrador"], response_model=schemas.AdministradorResponseModel)
 def get_administrador(id_administrador: int, db: Session = Depends(get_db)):
   db_administrador = AdministradorRepo.read_by_id(db, id_administrador)
   if db_administrador is None:
     raise HTTPException(status_code=404, detail="Administrador não consta em nossa banco de dados :c")
+  return db_administrador
+
+@app.get('/administrador/all', tags=["Administrador"], response_model=List[schemas.AdministradorResponseModel])
+def get_administrador(db: Session = Depends(get_db)):
+  db_administrador = AdministradorRepo.read_all(db)
   return db_administrador
 
 @app.delete('/administrador/{id_administrador}', tags=["Administrador"])
