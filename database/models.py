@@ -58,8 +58,7 @@ class ConteudoBase(Base):
     tipo: Mapped[str] = mapped_column(sa.Enum('BOAS_VINDAS', 'TO_DO','SOBRE_EMPRESA','DOCUMENTOS_IMPORTANTES'),
                                       default='DOCUMENTOS_IMPORTANTES',
                                       nullable=False)
-    corpo: Mapped[str] = mapped_column(sa.String,
-                                       nullable=False)
+    corpo: Mapped[str] = mapped_column(sa.String, nullable=True)
     id_administrador: Mapped[int] = mapped_column(sa.Integer,
                                                   sa.ForeignKey('administrador.id_administrador'),
                                                   nullable=False)

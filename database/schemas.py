@@ -1,4 +1,5 @@
 from datetime import datetime
+from typing import Optional
 from pydantic import BaseModel
 
 class AdministradorModel(BaseModel):
@@ -26,7 +27,7 @@ class AdministradorResponseModel(BaseModel):
 class ConteudoModel(BaseModel):
   titulo: str
   tipo: str
-  corpo: str
+  corpo: Optional[str] = None
   id_administrador: int
   
   class Config:
