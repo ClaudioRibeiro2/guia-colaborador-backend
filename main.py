@@ -55,13 +55,14 @@ async def delete_administrador(id_administrador: int, db: Session = Depends(get_
   await AdministradorRepo.delete(db, id_administrador)
   return "Administrador removido com sucesso!"
 
-@app.put('/administrador/{id_administrador}', tags=["Administrador"], response_model=schemas.AdministradorModel)
+@app.put('/administrador/{id_administrador}', tags=["Administrador"], response_model=schemas.AdministradorResponseModel)
 async def update_administrador(id_administrador: int, administrador_request: schemas.AdministradorModel, db: Session = Depends(get_db)):
   db_administrador = db.get(models.AdministradorBase, id_administrador)
   if db_administrador:
     # update_administrador_encoded = jsonable_encoder(administrador_request)
     db_administrador.nome_completo = administrador_request.nome_completo
     db_administrador.email = administrador_request.email
+    db_administrador.setor = administrador_request.setor
     db_administrador.data_nascimento = administrador_request.data_nascimento
     db_administrador.senha = administrador_request.senha
     return await AdministradorRepo.update(db=db, administrador_data=db_administrador)

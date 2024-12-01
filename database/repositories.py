@@ -6,6 +6,7 @@ class AdministradorRepo:
   async def create(db: Session, administrador: schemas.AdministradorModel):
     db_administrador = models.AdministradorBase(nome_completo=administrador.nome_completo,
                                                 email=administrador.email,
+                                                setor=administrador.setor,
                                                 data_nascimento=administrador.data_nascimento,
                                                 senha=administrador.senha)
     db.add(db_administrador)
@@ -28,7 +29,7 @@ class AdministradorRepo:
     return updated_item
   
   async def delete(db: Session, id_administrador):
-    db_item = db.get(models.ConteudoBase ,id_administrador)
+    db_item = db.get(models.AdministradorBase ,id_administrador)
     db.delete(db_item)
     db.commit()
   

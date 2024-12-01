@@ -17,6 +17,8 @@ class AdministradorBase(Base):
     email: Mapped[str] = mapped_column(sa.String,
                                     nullable=False,
                                     unique=True)
+    setor: Mapped[str] = mapped_column(sa.String,
+                                       nullable=False)
     data_nascimento: Mapped[datetime] = mapped_column(sa.DateTime(),
                              nullable=False)
     senha: Mapped[str] = mapped_column(sa.String,

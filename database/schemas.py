@@ -4,6 +4,7 @@ from pydantic import BaseModel
 class AdministradorModel(BaseModel):
   nome_completo: str
   email: str
+  setor: str
   data_nascimento: datetime
   senha: str
   
@@ -14,6 +15,7 @@ class AdministradorResponseModel(BaseModel):
   id_administrador: int
   nome_completo: str
   email: str
+  setor: str
   data_nascimento: datetime
   senha: str
   
