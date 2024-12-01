@@ -37,7 +37,7 @@ class ColaboradorBase(Base):
                                                   nullable=False)
     senha: Mapped[str] = mapped_column(sa.String,
                                        nullable=False)
-    id_administrador: Mapped[int] = mapped_column(sa.Integer(),
+    id_administrador: Mapped[int] = mapped_column(sa.Integer,
                                                   sa.ForeignKey('administrador.id_administrador'),
                                                   nullable=False)
     administrador: Mapped['AdministradorBase'] = relationship()    
@@ -56,6 +56,7 @@ class ConteudoBase(Base):
                                       nullable=False)
     corpo: Mapped[str] = mapped_column(sa.String,
                                        nullable=False)
-    id_administrador: Mapped[int] = mapped_column(sa.Integer(),
-                                                  sa.ForeignKey('administrador.id_administrador'))
+    id_administrador: Mapped[int] = mapped_column(sa.Integer,
+                                                  sa.ForeignKey('administrador.id_administrador'),
+                                                  nullable=False)
     administrador: Mapped['AdministradorBase'] = relationship()

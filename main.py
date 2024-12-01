@@ -34,7 +34,7 @@ async def create_administrador(administrador_request:schemas.AdministradorModel,
         raise HTTPException(status_code=400, detail="Já existe um Administrador com esse e-mail!")
   return await AdministradorRepo.create(db=db, administrador=administrador_request)
 
-@app.get('/administrador/{id_administrador}', tags=["Administrador"], response_model=schemas.AdministradorModel)
+@app.get('/administrador/{id_administrador}', tags=["Administrador"], response_model=schemas.AdministradorResponseModel)
 def get_administrador(id_administrador: int, db: Session = Depends(get_db)):
   db_administrador = AdministradorRepo.read_by_id(db, id_administrador)
   if db_administrador is None:
@@ -113,7 +113,11 @@ def get_conteudo(id_conteudo: int, db: Session = Depends(get_db)):
     raise HTTPException(status_code=404, detail="Conteudo não consta em nossa banco de dados :c")
   return db_conteudo
 
-# Pegar todos os conteudos de um administrador
+@app.get('/conteudo/all/{id_administrador}', tags=["Conteudo"], response_model=None)
+def get_all_conteudos(id_administrador:int , db:Session = Depends(get_db)) -> dict[models.ConteudoBase]:
+  conteudos = ConteudoRepo.read_conteudos_by_administrador(db, id_administrador)
+  print(ConteudoRepo.read_all(db))
+  return dict(ConteudoRepo.read_all(db))
   
 @app.delete('/conteudo/{id_conteudo}', tags=["Conteudo"],)
 async def delete_conteudo(id_conteudo: int, db: Session = Depends(get_db)):

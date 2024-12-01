@@ -9,6 +9,17 @@ class AdministradorModel(BaseModel):
   
   class Config:
     orm_mode: True
+
+class AdministradorResponseModel(BaseModel):
+  id_administrador: int
+  nome_completo: str
+  email: str
+  data_nascimento: datetime
+  senha: str
+  
+  class Config:
+    orm_mode: True
+
     
 class ConteudoModel(BaseModel):
   titulo: str

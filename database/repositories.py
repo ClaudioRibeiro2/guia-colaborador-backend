@@ -1,3 +1,4 @@
+from sqlalchemy import select
 from sqlalchemy.orm import Session
 from . import models, schemas
 
@@ -81,6 +82,12 @@ class ConteudoRepo:
   
   def read_by_id_conteudo(db: Session, id_conteudo):
     return db.query(models.ConteudoBase).filter_by(id_conteudo = id_conteudo).first()
+  
+  def read_conteudos_by_administrador(db:Session, id_administrador):
+    return db.query(models.ConteudoBase).join(models.AdministradorBase).filter(models.ColaboradorBase.id_administrador == id_administrador).all()
+  
+  def read_all(db:Session):
+    return db.execute(select(models.ConteudoBase).offset(0).limit(100)).all() 
   
   async def update(db: Session, conteudo_data):
     print(conteudo_data)
