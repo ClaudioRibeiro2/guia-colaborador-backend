@@ -72,6 +72,7 @@ class ConteudoRepo:
     db_conteudo = models.ConteudoBase(titulo=conteudo.titulo,
                                       tipo=conteudo.tipo,
                                       corpo=conteudo.corpo,
+                                      disponivel=conteudo.disponivel,
                                       id_administrador=conteudo.id_administrador)
     db.add(db_conteudo)
     db.commit()

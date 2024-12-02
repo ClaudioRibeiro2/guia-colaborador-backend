@@ -7,8 +7,18 @@ from db import  engine, get_db
 from sqlalchemy.orm import Session
 from database.repositories import *
 import time
+from fastapi.middleware.cors import CORSMiddleware
+
 
 app = FastAPI()
+
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:5173"],  # Substitua "*" por origens específicas em produção
+    allow_credentials=True,
+    allow_methods=["*"],  # Permitir todos os métodos (GET, POST, etc.)
+    allow_headers=["*"],  # Permitir todos os cabeçalhos
+)
 
 models.Base.metadata.create_all(bind=engine)
 
@@ -115,7 +125,7 @@ async def update_colaborador(id_colaborador: int, colaborador_request: schemas.C
 # CRUD DE CONTEUDO
 @app.post('/conteudo', tags=["Conteudo"], response_model=schemas.ConteudoModel, status_code=201)
 async def create_conteudo(conteudo_request: schemas.ConteudoModel, db: Session = Depends(get_db)):
-  return await ConteudoRepo.create(db=db, conteudo=conteudo_request)
+    return await ConteudoRepo.create(db=db, conteudo=conteudo_request)
 
 @app.get('/conteudo/id/{id_conteudo}', tags=["Conteudo"], response_model=schemas.ConteudoResponseModel)
 def get_conteudo(id_conteudo: int, db: Session = Depends(get_db)):
@@ -136,14 +146,16 @@ async def delete_conteudo(id_conteudo: int, db: Session = Depends(get_db)):
     raise HTTPException(status_code=404, detail="Conteudo não consta em nossa banco de dados :c")
   await AdministradorRepo.delete(db, id_conteudo)
   return "Conteudo removido com sucesso!"
+
 @app.put('/conteudo/{id_conteudo}', tags=["Conteudo"], response_model=schemas.ConteudoModel)
 async def update_conteudo(id_conteudo: int, conteudo_request: schemas.ConteudoModel, db: Session = Depends(get_db)):
-  db_conteudo = db.get(models.ConteudoBase, id_conteudo)
-  if db_conteudo:
-    db_conteudo.titulo = conteudo_request.titulo
-    db_conteudo.tipo = conteudo_request.tipo
-    db_conteudo.corpo = conteudo_request.corpo
-    db_conteudo.id_administrador = conteudo_request.id_administrador
-    return await ColaboradorRepo.update(db=db, colaborador_data=db_conteudo)
-  else:
-      raise HTTPException(status_code=400, detail="Conteudo não consta em nossa banco de dados :c")
+    db_conteudo = db.get(models.ConteudoBase, id_conteudo)
+    if db_conteudo:
+        db_conteudo.titulo = conteudo_request.titulo
+        db_conteudo.tipo = conteudo_request.tipo
+        db_conteudo.corpo = conteudo_request.corpo
+        db_conteudo.id_administrador = conteudo_request.id_administrador
+        db_conteudo.disponivel = conteudo_request.disponivel  # Atualizando o campo 'disponivel'
+        return await ConteudoRepo.update(db=db, conteudo_data=db_conteudo)
+    else:
+        raise HTTPException(status_code=404, detail="Conteúdo não encontrado.")

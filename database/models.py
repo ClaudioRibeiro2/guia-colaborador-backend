@@ -55,10 +55,12 @@ class ConteudoBase(Base):
                                              autoincrement=True)
     titulo: Mapped[str] = mapped_column(sa.String,
                                         nullable=False)
-    tipo: Mapped[str] = mapped_column(sa.Enum('BOAS_VINDAS', 'TO_DO','SOBRE_EMPRESA','DOCUMENTOS_IMPORTANTES'),
-                                      default='DOCUMENTOS_IMPORTANTES',
-                                      nullable=False)
+    tipo: Mapped[str] = mapped_column(sa.String, nullable=False, default='DOCUMENTOS_IMPORTANTES')
+
     corpo: Mapped[str] = mapped_column(sa.String, nullable=True)
+    disponivel: Mapped[bool] = mapped_column(sa.Boolean,
+                                             default=True,
+                                             nullable=False)
     id_administrador: Mapped[int] = mapped_column(sa.Integer,
                                                   sa.ForeignKey('administrador.id_administrador'),
                                                   nullable=False)

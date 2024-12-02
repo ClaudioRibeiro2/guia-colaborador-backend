@@ -28,6 +28,7 @@ class ConteudoModel(BaseModel):
   titulo: str
   tipo: str
   corpo: Optional[str] = None
+  disponivel: bool
   id_administrador: int
   
   class Config:
@@ -38,6 +39,7 @@ class ConteudoResponseModel(BaseModel):
   titulo: str
   tipo: str
   corpo: str
+  disponivel: bool = False
   id_administrador: int
   
   class Config:
